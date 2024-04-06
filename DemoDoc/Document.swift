@@ -6,12 +6,15 @@
 //
 
 import Cocoa
+import UniformTypeIdentifiers
 
 class Document: NSPersistentDocument {
 
+    let dataManager: DataManager
+
     override init() {
+        dataManager = DataManager()
         super.init()
-        // Add your subclass-specific initialization here.
     }
 
     override class var autosavesInPlace: Bool {
@@ -25,4 +28,25 @@ class Document: NSPersistentDocument {
         self.addWindowController(windowController)
     }
 
+    @IBAction
+    func importFile(_: AnyObject) {
+        // Present an open panel to choose a picture to display in the outline view.
+        let openPanel = NSOpenPanel()
+
+        // Find a picture to add.
+        openPanel.message = NSLocalizedString("Choose File to Import message", comment: "")
+        openPanel.prompt = NSLocalizedString("open panel prompt", comment: "")
+        openPanel.canCreateDirectories = false
+        openPanel.allowedContentTypes = [UTType.propertyList]
+
+        openPanel.begin { (response) in
+            guard response == NSApplication.ModalResponse.OK else { return }
+
+            self.dataManager.importFile(at: openPanel.url!)
+        }
+    }
+
+    @IBAction
+    func exportToFile(_: AnyObject) {
+    }
 }
