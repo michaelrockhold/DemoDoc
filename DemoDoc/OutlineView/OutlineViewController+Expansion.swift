@@ -14,7 +14,7 @@ import Cocoa
 //     */
 ///// - Tag: RestoreExpansion
 //    func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
-//        let node = self.dataManager?.nodeFromIdentifier(anObject: object)  // The incoming object is the identifier.
+//        let node = self.outlineViewModel.nodeFromIdentifier(anObject: object)  // The incoming object is the identifier.
 //        return node
 //    }
 //    
@@ -23,7 +23,7 @@ import Cocoa
 //     */
 ///// - Tag: EncodeExpansion
 //    func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
-//        let node = DataManager.node(from: item!)
+//        let node = Node.node(from: item!)
 //        return node?.identifier // The outgoing object is the identifier.
 //    }
 //}

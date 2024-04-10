@@ -23,7 +23,7 @@ extension OutlineViewController {
 
     /// An encode state that helps save the restorable state of this view controller.
     override func encodeRestorableState(with coder: NSCoder) {
-        coder.encode(self.treeController?.selectionIndexPaths, forKey: OutlineViewController.savedSelectionKey)
+        coder.encode(self.outlineViewModel?.treeController.selectionIndexPaths, forKey: OutlineViewController.savedSelectionKey)
         super.encodeRestorableState(with: coder)
     }
 
@@ -37,8 +37,7 @@ extension OutlineViewController {
         // Restore the selected indexPaths.
         if let savedSelectedIndexPaths =
             coder.decodeObject(forKey: OutlineViewController.savedSelectionKey) as? [IndexPath] {
-            self.treeController?.setSelectionIndexPaths(savedSelectedIndexPaths)
+            self.outlineViewModel?.treeController.setSelectionIndexPaths(savedSelectedIndexPaths)
         }
     }
-    
 }

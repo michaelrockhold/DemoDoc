@@ -11,13 +11,13 @@ extension OutlineViewController: NSOutlineViewDelegate {
     
     // Is the outline view item a group node? Not a folder but a group, with Hide/Show buttons.
     func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool {
-        let node = DataManager.node(from: item)
+        let node = Node.node(from: item)
         return node!.isRoot
     }
     
     // Should you select the outline view item? No selection for special groupings or separators.
     func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
-        if let node = DataManager.node(from: item) {
+        if let node = Node.node(from: item) {
             return !node.isRoot
         } else {
             return false
@@ -26,9 +26,9 @@ extension OutlineViewController: NSOutlineViewDelegate {
     
     // What should be the row height of an outline view item?
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        var rowHeight = outlineView.rowHeight
-        
-        guard let node = DataManager.node(from: item) else { return rowHeight }
+        let rowHeight = outlineView.rowHeight
+
+        guard let node = Node.node(from: item) else { return rowHeight }
 
         return rowHeight
     }
@@ -36,7 +36,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         var view: NSTableCellView?
         
-        guard let node = DataManager.node(from: item) else { return view }
+        guard let node = Node.node(from: item) else { return view }
 
         if self.outlineView(outlineView, isGroupItem: item) {
             // The row is a group node, so return NSTableCellView as a special group row.

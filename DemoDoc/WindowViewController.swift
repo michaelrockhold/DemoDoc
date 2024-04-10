@@ -12,10 +12,44 @@ import UniformTypeIdentifiers // for UTType
 class WindowViewController: NSViewController {
 
     // MARK: - Properties
+
+    var splitViewController: SplitViewController? = nil
+
     override var representedObject: Any? {
         didSet {
-        // Update the view, if already loaded.
+            if let svc = splitViewController {
+                svc.representedObject = representedObject
+            }
+
+            // Update the view, if already loaded.
+            outlineViewModelDidLoad()
         }
+    }
+
+    func outlineViewModelDidLoad() {
+        // Listens for selection changes to the NSTreeController so it can update the UI elements (add/remove buttons).
+        selectionChangedCancellable = self.outlineViewModel?.treeController.publisher(for: \.selectedNodes)
+            .sink() { [self] selectedNodes in
+
+                // Examine the current selection and adjust the UI elements.
+
+                // Remember the selected nodes for later when the system calls NSToolbarItemValidation and NSMenuItemValidation.
+                self.selectedNodes = selectedNodes
+
+                guard let currentlySelectedNodes = self.selectedNodes else { return }
+
+                if !currentlySelectedNodes.isEmpty && currentlySelectedNodes.count == 1 {
+                    if let item = Node.node(from: currentlySelectedNodes[0] as Any) {
+                        if item.isDirectory {
+                            // The user selected a directory, so this could take a while to populate the detail view controller.
+                            progIndicator.isHidden = false
+                            progIndicator.startAnimation(self)
+                        }
+                    }
+                }
+
+            }
+
     }
 
     @IBOutlet private weak var progIndicator: NSProgressIndicator!
@@ -46,30 +80,6 @@ class WindowViewController: NSViewController {
         toolbar.allowsUserCustomization = false
         self.view.window?.toolbar = toolbar
 
-        // Listens for selection changes to the NSTreeController so it can update the UI elements (add/remove buttons).
-        selectionChangedCancellable = self.treeController?.publisher(for: \.selectedNodes)
-            .sink() { [self] selectedNodes in
-
-                print ("selection now \(selectedNodes).")
-
-                // Examine the current selection and adjust the UI elements.
-
-                // Remember the selected nodes for later when the system calls NSToolbarItemValidation and NSMenuItemValidation.
-                self.selectedNodes = selectedNodes
-
-                guard let currentlySelectedNodes = self.selectedNodes else { return }
-
-                if !currentlySelectedNodes.isEmpty && currentlySelectedNodes.count == 1 {
-                    if let item = DataManager.node(from: currentlySelectedNodes[0] as Any) {
-                        if item.isDirectory {
-                            // The user selected a directory, so this could take a while to populate the detail view controller.
-                            progIndicator.isHidden = false
-                            progIndicator.startAnimation(self)
-                        }
-                    }
-                }
-
-            }
 
         // A notification so you know when the icon view controller finishes populating its content.
         NotificationCenter.default.addObserver(
@@ -166,7 +176,7 @@ extension WindowViewController: NSMenuItemValidation {
                     if !selection.isEmpty {
                         if selection.count == 1 {
                             let selectedNode = selection[0]
-                            if let item = DataManager.node(from: selectedNode as Any) {
+                            if let item = Node.node(from: selectedNode as Any) {
                                 // Enable add menu items when the selection is a non-URL based node.
                                 enable = item.canAddTo
                             }
@@ -184,6 +194,17 @@ extension WindowViewController: NSMenuItemValidation {
 private extension NSToolbarItem.Identifier {
     static let addItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier(rawValue: "add")
     static let removeItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier(rawValue: "remove")
+}
+
+extension WindowViewController {
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        if segue.identifier == "embed-splitview" {
+            guard let dest = segue.destinationController as? SplitViewController else {
+                fatalError("unexpected error: unexpected view controller transition")
+            }
+            splitViewController = dest
+        }
+    }
 }
 
 extension WindowViewController: NSToolbarDelegate {

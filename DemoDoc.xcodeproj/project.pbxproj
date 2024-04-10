@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E0770882BC5B157008E60DD /* OutlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0770862BC49D7B008E60DD /* OutlineViewModel.swift */; };
+		2E0770902BC6F891008E60DD /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E07708F2BC6F891008E60DD /* WindowController.swift */; };
 		2EDD7C0C2BC0FA050022056B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDD7C0B2BC0FA050022056B /* AppDelegate.swift */; };
-		2EDD7C0E2BC0FA050022056B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDD7C0D2BC0FA050022056B /* ViewController.swift */; };
 		2EDD7C102BC0FA050022056B /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDD7C0F2BC0FA050022056B /* Document.swift */; };
 		2EDD7C132BC0FA050022056B /* Document.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2EDD7C112BC0FA050022056B /* Document.xcdatamodeld */; };
 		2EDD7C152BC0FA090022056B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EDD7C142BC0FA090022056B /* Assets.xcassets */; };
 		2EDD7C182BC0FA090022056B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EDD7C162BC0FA090022056B /* Main.storyboard */; };
-		2EDD7C212BC0FE800022056B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDD7C202BC0FE800022056B /* DataManager.swift */; };
+		2EDD7C212BC0FE800022056B /* NodeImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDD7C202BC0FE800022056B /* NodeImporter.swift */; };
 		2EDD7C272BC0FEA30022056B /* NSImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDD7C222BC0FEA30022056B /* NSImage+.swift */; };
 		2EDD7C282BC0FEA30022056B /* Node+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDD7C232BC0FEA30022056B /* Node+.swift */; };
 		2EDD7C292BC0FEA30022056B /* NSTreeController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDD7C242BC0FEA30022056B /* NSTreeController+.swift */; };
@@ -35,6 +36,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E0770862BC49D7B008E60DD /* OutlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewModel.swift; sourceTree = "<group>"; };
+		2E07708F2BC6F891008E60DD /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
+		2E0770912BC74080008E60DD /* DataSource.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = DataSource.plist; sourceTree = "<group>"; };
+		2E0770922BC74080008E60DD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2EDD7C082BC0FA050022056B /* DemoDoc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoDoc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EDD7C0B2BC0FA050022056B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2EDD7C0D2BC0FA050022056B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -44,7 +49,7 @@
 		2EDD7C172BC0FA090022056B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2EDD7C192BC0FA090022056B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2EDD7C1A2BC0FA090022056B /* DemoDoc.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DemoDoc.entitlements; sourceTree = "<group>"; };
-		2EDD7C202BC0FE800022056B /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		2EDD7C202BC0FE800022056B /* NodeImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeImporter.swift; sourceTree = "<group>"; };
 		2EDD7C222BC0FEA30022056B /* NSImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSImage+.swift"; sourceTree = "<group>"; };
 		2EDD7C232BC0FEA30022056B /* Node+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+.swift"; sourceTree = "<group>"; };
 		2EDD7C242BC0FEA30022056B /* NSTreeController+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTreeController+.swift"; sourceTree = "<group>"; };
@@ -79,6 +84,8 @@
 		2EDD7BFF2BC0FA050022056B = {
 			isa = PBXGroup;
 			children = (
+				2E0770922BC74080008E60DD /* README.md */,
+				2E0770912BC74080008E60DD /* DataSource.plist */,
 				2EDD7C0A2BC0FA050022056B /* DemoDoc */,
 				2EDD7C092BC0FA050022056B /* Products */,
 			);
@@ -96,11 +103,13 @@
 			isa = PBXGroup;
 			children = (
 				2EDD7C0B2BC0FA050022056B /* AppDelegate.swift */,
+				2E07708F2BC6F891008E60DD /* WindowController.swift */,
 				2EDD7C0F2BC0FA050022056B /* Document.swift */,
-				2EDD7C202BC0FE800022056B /* DataManager.swift */,
+				2EDD7C202BC0FE800022056B /* NodeImporter.swift */,
 				2EDD7C0D2BC0FA050022056B /* ViewController.swift */,
 				2EDD7C2C2BC0FED00022056B /* SplitViewController.swift */,
 				2EDD7C2D2BC0FED00022056B /* WindowViewController.swift */,
+				2E0770862BC49D7B008E60DD /* OutlineViewModel.swift */,
 				2EDD7C472BC0FF310022056B /* Extensions */,
 				2EDD7C482BC0FF550022056B /* OutlineView */,
 				2EDD7C402BC0FF1F0022056B /* Child View Controllers */,
@@ -128,8 +137,8 @@
 			children = (
 				2EDD7C232BC0FEA30022056B /* Node+.swift */,
 				2EDD7C222BC0FEA30022056B /* NSImage+.swift */,
-				2EDD7C242BC0FEA30022056B /* NSTreeController+.swift */,
 				2EDD7C252BC0FEA30022056B /* URL+.swift */,
+				2EDD7C242BC0FEA30022056B /* NSTreeController+.swift */,
 				2EDD7C262BC0FEA30022056B /* NSViewController+.swift */,
 			);
 			path = Extensions;
@@ -228,14 +237,15 @@
 				2EDD7C3F2BC0FEFC0022056B /* OutlineViewController+ContextalMenu.swift in Sources */,
 				2EDD7C2A2BC0FEA30022056B /* URL+.swift in Sources */,
 				2EDD7C2E2BC0FED00022056B /* SplitViewController.swift in Sources */,
-				2EDD7C212BC0FE800022056B /* DataManager.swift in Sources */,
+				2EDD7C212BC0FE800022056B /* NodeImporter.swift in Sources */,
 				2EDD7C2F2BC0FED00022056B /* WindowViewController.swift in Sources */,
 				2EDD7C442BC0FF1F0022056B /* ImageViewController.swift in Sources */,
 				2EDD7C292BC0FEA30022056B /* NSTreeController+.swift in Sources */,
 				2EDD7C3A2BC0FEFC0022056B /* OutlineViewController+Delegate.swift in Sources */,
+				2E0770882BC5B157008E60DD /* OutlineViewModel.swift in Sources */,
 				2EDD7C2B2BC0FEA30022056B /* NSViewController+.swift in Sources */,
+				2E0770902BC6F891008E60DD /* WindowController.swift in Sources */,
 				2EDD7C272BC0FEA30022056B /* NSImage+.swift in Sources */,
-				2EDD7C0E2BC0FA050022056B /* ViewController.swift in Sources */,
 				2EDD7C462BC0FF1F0022056B /* IconViewController.swift in Sources */,
 				2EDD7C0C2BC0FA050022056B /* AppDelegate.swift in Sources */,
 				2EDD7C3E2BC0FEFC0022056B /* OutlineView.swift in Sources */,

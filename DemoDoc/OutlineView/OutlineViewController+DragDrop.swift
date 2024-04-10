@@ -107,7 +107,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
   		The system calls this for each dragged item in the selection.
 	*/
     func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
-        guard let dragNode = DataManager.node(from: item) else { return nil }
+        guard let dragNode = Node.node(from: item) else { return nil }
 
         let rowIdx = outlineView.row(forItem: item)
         
@@ -168,15 +168,16 @@ extension OutlineViewController: NSOutlineViewDataSource {
       		if let droppedPasteboardItem = dragItem.item as? NSPasteboardItem {
                 if let checkItem = self.itemFromPasteboardItem(droppedPasteboardItem) {
                     // Start at the root and recursively search.
-                    let treeRoot = self.treeController!.arrangedObjects
-                    let node = treeRoot.descendant(at: checkItem.indexPath)
-                    var parent = locationItem
-                    while parent != nil {
-                        if parent == node {
-                            droppedOntoItself = true
-                            break
+                    if let treeRoot = self.outlineViewModel?.treeController.arrangedObjects {
+                        let node = treeRoot.descendant(at: checkItem.indexPath)
+                        var parent = locationItem
+                        while parent != nil {
+                            if parent == node {
+                                droppedOntoItself = true
+                                break
+                            }
+                            parent = parent?.parent
                         }
-                        parent = parent?.parent
                     }
                 }
 			}
@@ -199,7 +200,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
         else { return result }
         
         // Find the node you're dropping onto.
-        if let dropNode = DataManager.node(from: item as Any) {
+        if let dropNode = Node.node(from: item as Any) {
             // Don't allow dropping into file system objects.
             if !dropNode.isURLNode {
                 // The current drop location is inside the container.
@@ -238,7 +239,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
         
         // Insert the array into the tree controller.
         for url in urlsToDrop {
-            self.dataManager!.addFileSystemObject(url, indexPath: location)
+            self.outlineViewModel?.addFileSystemObject(url, indexPath: location)
         }
         
         // Collapse each inserted item.
@@ -246,21 +247,23 @@ extension OutlineViewController: NSOutlineViewDataSource {
         var childLevelIndex = index
         var droppedIndexPaths = [IndexPath]()
         for _ in 0..<urlsToDrop.count {
-            currentIndex.append(childLevelIndex)
-            self.treeController?.setSelectionIndexPath(currentIndex)
+            if let tc = self.outlineViewModel?.treeController {
+                currentIndex.append(childLevelIndex)
+                tc.setSelectionIndexPath(currentIndex)
 
-            outlineView.collapseItem(self.treeController?.selectedNodes[0], collapseChildren: true)
-            childLevelIndex += 1
-            
-            // Accumulate dropped indexPaths for later.
-            droppedIndexPaths.append(currentIndex)
-            
-            // Reset the current index path for the next iteration.
-            currentIndex = currentIndex.dropLast()
+                outlineView.collapseItem(tc.selectedNodes[0], collapseChildren: true)
+                childLevelIndex += 1
+
+                // Accumulate dropped indexPaths for later.
+                droppedIndexPaths.append(currentIndex)
+
+                // Reset the current index path for the next iteration.
+                currentIndex = currentIndex.dropLast()
+            }
         }
         
         // Select all the dropped items.
-        self.treeController?.setSelectionIndexPaths(droppedIndexPaths)
+        self.outlineViewModel?.treeController.setSelectionIndexPaths(droppedIndexPaths)
     }
     
     // The user is doing an inter-drag drop from outside the app to the outline view.
@@ -298,8 +301,8 @@ extension OutlineViewController: NSOutlineViewDataSource {
                                                         self.handleError(error)
                                                     } else {
                                                         OperationQueue.main.addOperation {
-                                                            let node = self.dataManager?.fileSystemNode(from: fileURL)
-                                                            self.treeController?.insert(node, atArrangedObjectIndexPath: dropIndexPath)
+                                                            let node = self.outlineViewModel?.fileSystemNode(from: fileURL)
+                                                            self.outlineViewModel?.treeController.insert(node, atArrangedObjectIndexPath: dropIndexPath)
                                                         }
                                                     }
      											}
@@ -332,7 +335,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
 			}
         }
         
-        self.treeController?.move(itemsToMove, to: indexPath)
+        self.outlineViewModel?.treeController.move(itemsToMove, to: indexPath)
     }
     
     /** Accept the drop.
@@ -348,7 +351,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
                      item targetItem: Any?,
                      childIndex index: Int) -> Bool {
         // Find the index path to insert the dropped objects.
-        if let dropIndexPath = self.dataManager?.droppedIndexPath(item: targetItem, childIndex: index) {
+        if let dropIndexPath = self.outlineViewModel?.droppedIndexPath(item: targetItem, childIndex: index) {
             // Check the dragging type.
             if info.draggingPasteboard.availableType(from: [.nodeRowPasteBoardType]) != nil {
                 // The user dropped one of your own items.
@@ -375,7 +378,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
             // Find the items the user is dragging to the Trash (as a dictionary containing their row numbers).
             for draggedItem in items {
                 if let item = itemFromPasteboardItem(draggedItem) {
-                    if let itemToRemove = DataManager.node(from: item) {
+                    if let itemToRemove = Node.node(from: item) {
                         itemsToRemove.append(itemToRemove)
                     }
                 }

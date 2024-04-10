@@ -36,7 +36,7 @@ extension OutlineViewController: CustomMenuDelegate {
             var nodesToRemove = [Node]()
             for item in selectionIndexes {
                 if let rowItem = outlineView.item(atRow: item),
-                	let node = DataManager.node(from: rowItem) {
+                	let node = Node.node(from: rowItem) {
                         nodesToRemove.append(node)
                     }
             }
@@ -45,7 +45,7 @@ extension OutlineViewController: CustomMenuDelegate {
             // Expect the first item, the first item being a tree node and ultimately a Node class.
             guard let item = selectionIndexes.first,
                 let rowItem = outlineView.item(atRow: item),
-                let node = DataManager.node(from: rowItem) else { return }
+                let node = Node.node(from: rowItem) else { return }
 
             switch menuItem.tag {
             case MenuItemTags.removeTag.rawValue:
@@ -62,7 +62,7 @@ extension OutlineViewController: CustomMenuDelegate {
             case MenuItemTags.addPictureTag.rawValue:
                 // Add a picture object to the menu item's representedObject.
                 if let item = self.outlineView.item(atRow: item) as? NSTreeNode,
-                    let addToNode = DataManager.node(from: item) {
+                    let addToNode = Node.node(from: item) {
                         addPictureAtItem(addToNode)
                 }
                 
@@ -114,7 +114,7 @@ extension OutlineViewController: CustomMenuDelegate {
                 // You must have an item at that row.
                 let item = outlineView.item(atRow: rows.first!),
                 	// You must have a node from that item.
-                	let node = DataManager.node(from: item) else { return contextMenu }
+                	let node = Node.node(from: item) else { return contextMenu }
             
             // The item is a non-URL file object, so you can remove or rename it.
             //

@@ -168,3 +168,14 @@ extension Node {
     }
     
 }
+
+extension Node {
+    // Return a Node class from the specified outline view item through its representedObject.
+    class func node(from item: Any) -> Node? {
+        if let treeNode = item as? NSTreeNode, let node = treeNode.representedObject as? Node {
+            return node
+        } else {
+            return nil
+        }
+    }
+}
